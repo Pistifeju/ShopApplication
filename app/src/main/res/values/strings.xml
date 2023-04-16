@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Shop Application</string>
     <string name="password">Password</string>
-    <string name="email">email</string>
+    <string name="email">Email</string>
     <string name="login">Login</string>
+    <string name="registration">Registration</string>
+    <string name="username">Username</string>
+    <string name="passwordAgain">Password Again</string>
 </resources>
