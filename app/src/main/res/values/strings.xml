@@ -6,4 +6,17 @@
     <string name="registration">Registration</string>
     <string name="username">Username</string>
     <string name="passwordAgain">Password Again</string>
+    <string name="phoneNumber">Phone number</string>
+    <string name="address">Address</string>
+    <string name="buyer">Buyer</string>
+    <string name="seller">Seller</string>
+    <string name="product_description">Product Description\n</string>
+    <string name="login_as_guest">Login as guest</string>
+    <string name="login_with_google">Login with Google</string>
+    <string-array name="phoneModes">
+        <item>Home</item>
+        <item>Work</item>
+        <item>Mobile</item>
+        <item>Other</item>
+    </string-array>
 </resources>
