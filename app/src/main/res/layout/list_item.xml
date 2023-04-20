@@ -59,7 +59,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/price"
-            android:text="Kosárba"
+            android:text="@string/add_to_cart"
             android:layout_centerHorizontal="true"/>
 
     </RelativeLayout>

@@ -1,6 +1,6 @@
 package com.example.shopapplication;
 
-public class ShoppingItem {
+public class    ShoppingItem {
     private String name;
     private String info;
     private String price;

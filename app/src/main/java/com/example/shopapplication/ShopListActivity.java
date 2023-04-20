@@ -1,7 +1,11 @@
 package com.example.shopapplication;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,6 +47,10 @@ public class ShopListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop_list);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.showOverflowMenu();
+
         user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
 
@@ -71,7 +79,7 @@ public class ShopListActivity extends AppCompatActivity {
         this.itemList.clear();
 
         for (int i = 0; i < itemsList.length; i++) {
-            this.itemList.add(new ShoppingItem(itemsList[i], itemsInfo[i], itemsPrice[i], itemsRate.getFloat(1, 0), itemsImageResource.getResourceId(i, 0)));
+            this.itemList.add(new ShoppingItem(itemsList[i], itemsInfo[i], itemsPrice[i], itemsRate.getFloat(i, 0), itemsImageResource.getResourceId(i, 0)));
         }
 
         itemsImageResource.recycle();
@@ -83,7 +91,8 @@ public class ShopListActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.shop_list_menu, menu);
-        MenuItem menuItem = menu.findItem(R.id.search);
+
+        MenuItem menuItem = menu.findItem(R.id.search_bar);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -97,11 +106,13 @@ public class ShopListActivity extends AppCompatActivity {
                 return false;
             }
         });
+
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        super.onOptionsItemSelected(item);
         int itemId = item.getItemId();
         if (itemId == R.id.log_out_button) {
             FirebaseAuth.getInstance().signOut();
@@ -138,7 +149,7 @@ public class ShopListActivity extends AppCompatActivity {
             }
         });
 
-        return super.onPrepareOptionsMenu(menu);
+        return true;
     }
 
     public void updateAlertIcon() {
@@ -148,6 +159,8 @@ public class ShopListActivity extends AppCompatActivity {
         } else {
             contextTextView.setText("");
         }
+
+        redCircle.setVisibility((cartItems > 0) ? VISIBLE : GONE);
     }
 
     private void changeSpanCount(MenuItem item, int drawableId, int spanCount) {
