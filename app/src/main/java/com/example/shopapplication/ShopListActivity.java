@@ -20,8 +20,13 @@ import android.widget.GridLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.sql.Array;
 import java.util.ArrayList;
@@ -41,6 +46,9 @@ public class ShopListActivity extends AppCompatActivity {
 
     private FrameLayout redCircle;
     private TextView contextTextView;
+
+    private FirebaseFirestore firestore;
+    private CollectionReference items;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +74,28 @@ public class ShopListActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(adapter);
 
-        initializeData();
+        firestore = FirebaseFirestore.getInstance();
+        items = firestore.collection("items");
+
+        queryData();
+    }
+
+    private void queryData() {
+        itemList.clear();
+
+        items.orderBy("name").limit(10).get().addOnSuccessListener(queryDocumentSnapshots -> {
+            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                ShoppingItem item = document.toObject(ShoppingItem.class);
+                itemList.add(item);
+            }
+
+            if (itemList.size() == 0) {
+                initializeData();
+                queryData();
+            }
+
+            adapter.notifyDataSetChanged();
+        });
     }
 
     private void initializeData() {
@@ -76,15 +105,11 @@ public class ShopListActivity extends AppCompatActivity {
         TypedArray itemsImageResource = getResources().obtainTypedArray(R.array.shopping_item_images);
         TypedArray itemsRate = getResources().obtainTypedArray(R.array.shopping_item_rates);
 
-        this.itemList.clear();
-
         for (int i = 0; i < itemsList.length; i++) {
-            this.itemList.add(new ShoppingItem(itemsList[i], itemsInfo[i], itemsPrice[i], itemsRate.getFloat(i, 0), itemsImageResource.getResourceId(i, 0)));
+            items.add(new ShoppingItem(itemsList[i], itemsInfo[i], itemsPrice[i], itemsRate.getFloat(i, 0), itemsImageResource.getResourceId(i, 0)));
         }
 
         itemsImageResource.recycle();
-
-        adapter.notifyDataSetChanged();
     }
 
     @Override

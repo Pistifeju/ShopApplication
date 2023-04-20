@@ -5,7 +5,9 @@ public class    ShoppingItem {
     private String info;
     private String price;
     private float ratedInfo;
-    private final int imageResource;
+    private int imageResource;
+
+    public ShoppingItem() {}
 
     public ShoppingItem(String name, String info, String price, float ratedInfo, int imageResource) {
         this.name = name;
