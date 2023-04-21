@@ -101,13 +101,6 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
             priceText = itemView.findViewById(R.id.price);
             itemImage = itemView.findViewById(R.id.itemImage);
             ratingBar = itemView.findViewById(R.id.ratingBar);
-
-            itemView.findViewById(R.id.add_to_cart).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ((ShopListActivity) context).updateAlertIcon();
-                }
-            });
         }
 
         public void bindTo(ShoppingItem currentItem) {
@@ -117,6 +110,8 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
             ratingBar.setRating(currentItem.getRatedInfo());
 
 //            Glide.with(context).load(currentItem.getImageResource()).into(itemImage);
+            itemView.findViewById(R.id.add_to_cart).setOnClickListener(v -> ((ShopListActivity) context).updateAlertIcon(currentItem));
+            itemView.findViewById(R.id.delete).setOnClickListener(v -> ((ShopListActivity) context).deleteItem(currentItem));
         }
     };
 
